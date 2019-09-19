@@ -39,23 +39,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         Button go = findViewById(R.id.btnGo);
-        Button cari = findViewById(R.id.btnSearch);
-        cari.setOnClickListener(op);
-        go.setOnClickListener(op);
+//        Button cari = findViewById(R.id.btnSearch);
+//        cari.setOnClickListener(op);
+//        go.setOnClickListener(op);
 
     }
 
-    final View.OnClickListener op = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.btnGo:sembunyikanKeyboard(view);
-                    gotoLokasi();
-                    break;
-                case R.id.idSearch:goCari(); break;
-            }
-        }
-    };
+//    final View.OnClickListener op = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            switch(view.getId()){
+//                case R.id.btnGo:sembunyikanKeyboard(view);
+//                    gotoLokasi();
+//                    break;
+//                case R.id.idSearch:goCari(); break;
+//            }
+//        }
+//    };
 
 
     @Override
@@ -111,8 +111,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng ITS = new LatLng(-7.2819705,112.795323);
-        mMap.addMarker(new MarkerOptions().position(ITS).title("Marker in ITS"));
+        LatLng ITS = new LatLng(-7.279691,112.797515);
+        mMap.addMarker(new MarkerOptions().position(ITS).title("Marker in Informatika ITS"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ITS,15));
 
     }
@@ -123,46 +123,46 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Lokasibaru,z));
     }
 
-    private void hitungJarak(double latAsal, Double lngAsal, double latTujuan, double lngTujuan){
-        Location asal = new Location("asal");
-        Location tujuan = new Location("tujuan");
-        tujuan.setLatitude(latTujuan);
-        tujuan.setLongitude(lngTujuan);
-        asal.setLatitude(latAsal);
-        asal.setLongitude(lngAsal);
-        float jarak = (float) asal.distanceTo(tujuan)/1000;
-        String jaraknya = String.valueOf(jarak);
-        Toast.makeText(getBaseContext(), "jarak: " +jaraknya + " km", Toast.LENGTH_LONG).show();
-    }
+//    private void hitungJarak(double latAsal, Double lngAsal, double latTujuan, double lngTujuan){
+//        Location asal = new Location("asal");
+//        Location tujuan = new Location("tujuan");
+//        tujuan.setLatitude(latTujuan);
+//        tujuan.setLongitude(lngTujuan);
+//        asal.setLatitude(latAsal);
+//        asal.setLongitude(lngAsal);
+//        float jarak = (float) asal.distanceTo(tujuan)/1000;
+//        String jaraknya = String.valueOf(jarak);
+//        Toast.makeText(getBaseContext(), "jarak: " +jaraknya + " km", Toast.LENGTH_LONG).show();
+//    }
 
-    private void goCari(){
-        EditText tempat = findViewById(R.id.idSearch);
-        Geocoder g = new Geocoder(getBaseContext());
-        try{
-            List<Address> daftar = g.getFromLocationName(tempat.getText().toString(), 1);
-            Address alamat = daftar.get(0);
-
-            String nemuAlamat = alamat. getAddressLine(0);
-            Double lintang = alamat.getLatitude();
-            Double bujur = alamat.getLongitude();
-
-            Toast.makeText(getBaseContext(), "Ketemu " +nemuAlamat, Toast.LENGTH_LONG).show();
-
-            EditText zoom = findViewById(R.id.zoom);
-            Float dblzoom = Float.parseFloat(zoom.getText().toString());
-            Toast.makeText(this, "Move to: " +nemuAlamat +" Lat: " +lintang + " long: " +bujur, Toast.LENGTH_LONG).show();
-            gotoPeta(lintang,bujur,dblzoom);
-
-            EditText lat = findViewById(R.id.idLat);
-            EditText lng = findViewById(R.id.idLong);
-
-            lat.setText(lintang.toString());
-            lng.setText(bujur.toString());
-            Double dbllat = Double.parseDouble(lat.getText().toString());
-            Double dbllng = Double.parseDouble((lng.getText().toString()));
-            hitungJarak(dbllat,dbllng,lintang,bujur);
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-    }
+//    private void goCari(){
+//        EditText tempat = findViewById(R.id.idSearch);
+//        Geocoder g = new Geocoder(getBaseContext());
+//        try{
+//            List<Address> daftar = g.getFromLocationName(tempat.getText().toString(), 1);
+//            Address alamat = daftar.get(0);
+//
+//            String nemuAlamat = alamat. getAddressLine(0);
+//            Double lintang = alamat.getLatitude();
+//            Double bujur = alamat.getLongitude();
+//
+//            Toast.makeText(getBaseContext(), "Ketemu " +nemuAlamat, Toast.LENGTH_LONG).show();
+//
+//            EditText zoom = findViewById(R.id.zoom);
+//            Float dblzoom = Float.parseFloat(zoom.getText().toString());
+//            Toast.makeText(this, "Move to: " +nemuAlamat +" Lat: " +lintang + " long: " +bujur, Toast.LENGTH_LONG).show();
+//            gotoPeta(lintang,bujur,dblzoom);
+//
+//            EditText lat = findViewById(R.id.idLat);
+//            EditText lng = findViewById(R.id.idLong);
+//
+//            lat.setText(lintang.toString());
+//            lng.setText(bujur.toString());
+//            Double dbllat = Double.parseDouble(lat.getText().toString());
+//            Double dbllng = Double.parseDouble((lng.getText().toString()));
+//            hitungJarak(dbllat,dbllng,lintang,bujur);
+//        } catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }
 }
