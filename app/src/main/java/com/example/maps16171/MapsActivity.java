@@ -2,10 +2,16 @@ package com.example.maps16171;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +36,8 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private LocationManager lm;
+    private lokasiListener ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +49,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         Button go = findViewById(R.id.btnGo);
+        go.setOnClickListener(op);
         Button cari = findViewById(R.id.btnSearch);
         cari.setOnClickListener(op1);
-        go.setOnClickListener(op);
 
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ll = new lokasiListener();
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 50, 200, ll);
+    }
+
+    private class lokasiListener implements LocationListener {
+        private TextView txtLat, txtLong;
+        @Override
+        public void onLocationChanged(Location location) {
+            txtLat = (TextView) findViewById(R.id.idLat);
+            txtLong = (TextView) findViewById(R.id.idLong);
+
+            txtLat.setText(String.valueOf(location.getLatitude()));
+            txtLong.setText(String.valueOf(location.getLongitude()));
+            Toast.makeText(getBaseContext(), "GPS Capture:", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
     }
 
     final View.OnClickListener op = new View.OnClickListener() {
@@ -113,9 +162,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng ITS = new LatLng(-7.279691,112.797515);
-        mMap.addMarker(new MarkerOptions().position(ITS).title("Marker in Informatika ITS"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ITS,15));
+//        LatLng ITS = new LatLng(-7.279691,112.797515);
+//        mMap.addMarker(new MarkerOptions().position(ITS).title("Marker in Informatika ITS"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ITS,15));
 
     }
 
@@ -139,7 +188,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void goCari(){
         EditText tempat = findViewById(R.id.idSearch);
-        Log.d("MASOOOK", "goCari: " + tempat.getText());
+//        Log.d("MASOOOK", "goCari: " + tempat.getText());
         Geocoder g = new Geocoder(getBaseContext());
 
         try{
